@@ -86,15 +86,14 @@ def main():
    f_name = path_dir_in + '/' + 'title.crew.tsv.gz'
    title_crew = spark_session.read.csv(f_name, header=True, nullValue='null', schema=schema_title_crew,
                                           sep='\t')
-   print(title_crew.show())
+   #print(title_crew.show())
 
-   '''
-   df_query1 = title_akas.select("title", "region").where(f.col("region") == "UA")
-   df_query1.show()
-
+   df_query1 = title_akas.select("title").where(f.col("region") == "UA")
    df_query2 = name_basics.select("primaryName", "birthYear").where((f.col("birthYear") >= 1800) & (f.col("birthYear") < 1900))
-   df_query2.show()
-  '''
+   df_query3 = title_basics.select("primaryTitle").where((f.col("titleType") == 'movie') & (f.col("runtimeMinutes") > 120))
+   df_query4_temp = title_principals.drop("ordering","job")
+   df_query4_temp.show()
+
 
 
 if __name__ == "__main__":
