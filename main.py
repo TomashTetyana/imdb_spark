@@ -56,15 +56,46 @@ def main():
    f_name = path_dir_in + '/' + 'title.basics.tsv.gz'
    title_basics = spark_session.read.csv(f_name, header=True, nullValue='null', schema=schema_title_basics, sep='\t')
 
+   schema_title_principals = t.StructType([t.StructField("tconst", t.StringType(), False),
+                                           t.StructField("ordering", t.IntegerType(), False),
+                                           t.StructField("nconst", t.StringType(), False),
+                                           t.StructField("category", t.StringType(), False),
+                                           t.StructField("job", t.StringType(), False),
+                                           t.StructField("characters", t.StringType(), False)])
+   f_name = path_dir_in + '/' + 'title.principals.tsv.gz'
+   title_principals = spark_session.read.csv(f_name, header=True, nullValue='null', schema=schema_title_principals, sep='\t')
+
+   schema_title_episode = t.StructType([t.StructField("tconst", t.StringType(), False),
+                                        t.StructField("parentTconst", t.StringType(), False),
+                                        t.StructField("seasonNumber", t.IntegerType(), False),
+                                        t.StructField("episodeNumber", t.IntegerType(), False)])
+   f_name = path_dir_in + '/' + 'title.episode.tsv.gz'
+   title_episode = spark_session.read.csv(f_name, header=True, nullValue='null', schema=schema_title_episode,
+                                             sep='\t')
+
+   schema_title_ratings = t.StructType([t.StructField("tconst", t.StringType(), False),
+                                                 t.StructField("averageRating", t.DoubleType(), False),
+                                                 t.StructField("numVotes", t.IntegerType(), False)])
+   f_name = path_dir_in + '/' + 'title.ratings.tsv.gz'
+   title_ratings = spark_session.read.csv(f_name, header=True, nullValue='null', schema=schema_title_ratings,
+                                          sep='\t')
+
+   schema_title_crew = t.StructType([t.StructField("tconst", t.StringType(), False),
+                                     t.StructField("directors", t.StringType(), True),
+                                     t.StructField("writers", t.StringType(), True)])
+   f_name = path_dir_in + '/' + 'title.crew.tsv.gz'
+   title_crew = spark_session.read.csv(f_name, header=True, nullValue='null', schema=schema_title_crew,
+                                          sep='\t')
+   print(title_crew.show())
+
+   '''
    df_query1 = title_akas.select("title", "region").where(f.col("region") == "UA")
    df_query1.show()
 
    df_query2 = name_basics.select("primaryName", "birthYear").where((f.col("birthYear") >= 1800) & (f.col("birthYear") < 1900))
    df_query2.show()
+  '''
 
-
-
-   #print(title_basics.show())
 
 if __name__ == "__main__":
  main()
