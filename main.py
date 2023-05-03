@@ -1,10 +1,14 @@
 import os
 from pyspark import SparkConf, SparkContext
 from pyspark.sql import SparkSession, Window
-import pyspark.sql.types as t
-import pyspark.sql.functions as f
+from task_1 import *
+from task_2 import *
+from task_3 import *
+from task_4 import *
+from task_5 import *
+from task_6 import *
+from task_7 import *
 
-import pandas as pd
 ''''
 conf = SparkConf()
 conf.setMaster("local").setAppName('My app')
@@ -23,6 +27,9 @@ def main():
                     .config(conf=SparkConf())
                     .getOrCreate())
 
+
+   task_7(spark_session)
+'''
    path_dir_in = r'../imdb-spark/data'
    path_dir_out=r'../imdb-spark/result'
    schema_name_basics = t.StructType([t.StructField("nconst", t.StringType(), False),
@@ -87,12 +94,12 @@ def main():
    f_name = path_dir_in + '/' + 'title.crew.tsv.gz'
    title_crew = spark_session.read.csv(f_name, header=True, nullValue='null', schema=schema_title_crew,
                                           sep='\t')
-   #print(title_crew.show())
+  
 
    #df_query1 = title_akas.select("title").where(f.col("region") == "UA")
    #df_query2 = name_basics.select("primaryName", "birthYear").where((f.col("birthYear") >= 1800) & (f.col("birthYear") < 1900))
    #df_query3 = title_basics.select("primaryTitle").where((f.col("titleType") == 'movie') & (f.col("runtimeMinutes") > 120))
-   '''
+ 
    df_query4_1 = title_principals.drop("ordering","job").where(f.col('category')=='actor')
    df_query4_2 = name_basics.select('nconst','primaryName')
    df_query4_3 = title_basics.select('tconst','primaryTitle').filter((f.col('titleType') == 'movie') |
@@ -120,13 +127,21 @@ def main():
                                                   (f.when(f.col('endYear').isNotNull(),
                                                           (f.ceil(f.col('endYear')/10)*10-1))
                                                   .otherwise((f.floor(f.col('startYear')/10)*10+9))))))
-   df_qury7_2 = df_query7_1.select('tconst','primaryTitle','decade')
-   df_query7_3 = df_qury7_2.join(title_ratings, df_qury7_2.tconst == title_ratings.tconst, 'inner')
+   df_qeury7_2 = df_query7_1.select('tconst','primaryTitle','decade')
+   df_query7_3 = df_qeury7_2.join(title_ratings, df_qury7_2.tconst == title_ratings.tconst, 'inner')
    window_dept = Window.partitionBy("decade").orderBy(f.col("averageRating").desc())
    df_query7_4 = df_query7_3.withColumn("top", f.row_number().over(window_dept))
    df_query7_5 = df_query7_4.select('primaryTitle','decade','averageRating','numVotes','top').filter(f.col('top') <= 10)
    df_query7_5.show()
+   
+   df_query8_1 = title_basics.select('tconst','primaryTitle','genres').filter(f.col('genres') != '\\N')
+   df_query8_2 = df_query8_1.join(title_ratings, df_query8_1.tconst == title_ratings.tconst, 'inner')
+   window_dept = Window.partitionBy("genres").orderBy(f.col("averageRating").desc())
+   df_query8_3 = df_query8_2.withColumn("top", f.row_number().over(window_dept))
+   df_query8_4 = df_query8_3.select('primaryTitle', 'genres', 'averageRating', 'numVotes', 'top').filter(f.col('top') <= 10)
+   df_query8_4.show()
    '''
+
 
 
 
