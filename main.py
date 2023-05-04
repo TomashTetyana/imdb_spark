@@ -17,14 +17,17 @@ def main():
                     .config(conf=SparkConf())
                     .getOrCreate())
 
+   '''
    task_1(spark_session)
    task_2(spark_session)
    task_3(spark_session)
    task_4(spark_session)
-   task_5(spark_session)
+   
    task_6(spark_session)
    task_7(spark_session)
    task_8(spark_session)
+   '''
+   task_5(spark_session)
 
 if __name__ == "__main__":
  main()
