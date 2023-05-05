@@ -25,6 +25,6 @@ def task_7(spark_session):
     df_query7_4 = df_query7_3.withColumn("top", f.row_number().over(window_dept))
     df_query7_5 = df_query7_4.select('primaryTitle', 'decade', 'averageRating', 'numVotes', 'top').filter(
         f.col('top') <= 10)
-    df_query7_5 = df_query7_5.withColumn('decade', df_query7_5.decade.cast(t.StringType()))
-    read_write.write_result(f_result, df_query7_5)
+    df_query7_f = df_query7_5.withColumn('decade', df_query7_5.decade.cast(t.StringType()))
+    read_write.write_result(f_result, df_query7_f)
 

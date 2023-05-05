@@ -23,6 +23,6 @@ def task_4(spark_session):
                                                                        (f.col('titleType') == 'tvSeries') |
                                                                        (f.col('titleType') == 'tvMiniSeries'))
     df_query4_4 = df_query4_1.join(df_query4_2, df_query4_1.nconst == df_query4_2.nconst, 'inner')
-    df_query4 = df_query4_4.join(df_query4_3, df_query4_4.tconst == df_query4_3.tconst, 'inner')
-    df_query4_f = df_query4.select('primaryName', 'primaryTitle', 'characters').filter(f.col('characters') != '\\N')
+    df_query4_5 = df_query4_4.join(df_query4_3, df_query4_4.tconst == df_query4_3.tconst, 'inner')
+    df_query4_f = df_query4_5.select('primaryName', 'primaryTitle', 'characters').filter(f.col('characters') != '\\N')
     read_write.write_result(f_result, df_query4_f)

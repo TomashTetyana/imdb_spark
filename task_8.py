@@ -18,7 +18,6 @@ def task_8(spark_session):
     df_query8_2 = df_query8_1.join(title_ratings, df_query8_1.tconst == title_ratings.tconst, 'inner')
     window_dept = Window.partitionBy("genres").orderBy(f.col("averageRating").desc())
     df_query8_3 = df_query8_2.withColumn("top", f.row_number().over(window_dept))
-    df_query8_4 = df_query8_3.select('primaryTitle', 'genres', 'averageRating', 'numVotes', 'top').filter(
+    df_query8_f = df_query8_3.select('primaryTitle', 'genres', 'averageRating', 'numVotes', 'top').filter(
         f.col('top') <= 10)
-    df_query8_4.show()
-    read_write.write_result(f_result, df_query8_4)
+    read_write.write_result(f_result, df_query8_f)

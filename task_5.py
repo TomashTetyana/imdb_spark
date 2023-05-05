@@ -20,5 +20,4 @@ def task_5(spark_session):
     df_query5_4 = df_query5_3.groupby('region').count().orderBy('count', ascending=False).limit(100)
     df_query5_5 = df_query5_3.groupby('region').count().orderBy('count', ascending=True).limit(100)
     df_query5_f = df_query5_4.union(df_query5_5)
-    df_query5_f.show()
     read_write.write_result(f_result, df_query5_f)

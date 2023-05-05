@@ -1,4 +1,6 @@
-
+'''
+file paths, data schemas
+'''
 import pyspark.sql.types as t
 path_dir_in = r'../imdb-spark/data'
 path_dir_out=r'../imdb-spark/result'
