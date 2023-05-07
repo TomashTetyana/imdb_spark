@@ -9,6 +9,7 @@ from task_5 import *
 from task_6 import *
 from task_7 import *
 from task_8 import *
+from regres import *
 
 def main():
     '''
@@ -32,6 +33,7 @@ def main():
     task_6(spark_session)
     task_7(spark_session)
     task_8(spark_session)
+    regres(spark_session)
 
 
 
